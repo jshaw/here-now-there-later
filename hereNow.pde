@@ -1,21 +1,22 @@
-// Learning Processing
-// Daniel Shiffman
-// http://www.learningprocessing.com
+// Here Now There Later
+// Installation 
+// By Jordan Shaw
 
-// Example 16-13: Simple motion detection
+// Motion detection built off of Learning Processing example
+// By Daniel Shiffman / http://www.learningprocessing.com
+// Example 16-13:
 
 import processing.video.*;
 // Variable for capture device
 Capture video;
 // Previous Frame
 PImage prevFrame;
-PFont f;                          // STEP 2 Declare PFont variable
+PFont f;
 // How different must a pixel be to be a "motion" pixel
 float threshold = 50.0;
 float pixel_changed = 0.0;
 float allowed_percentage = 0.08;
 float current_percentage = 0.0;
-
 int motionDetected = 0;
 
 // String to switch to
@@ -28,6 +29,10 @@ String[] time = {
   "NOW", 
   "LATER",
 };
+
+// Dynamic
+//int f_width  = displayWidth;
+//int f_height = displayHeight;
 
 // larger
 //int f_width  = 1280;
@@ -44,12 +49,17 @@ int f_height = 480;
 float num_of_pixels = f_width * f_height; 
 
 void setup() {
-  f = createFont("Arial",30,true);
- 
   size(f_width,f_height);
+  
+  f = createFont("Helvetica-Bold",30,true);
+  
   video = new Capture(this, width, height, 30);
   // Create an empty image the same size as the video
   prevFrame = createImage(video.width,video.height,RGB);
+  
+  if (frame != null) {
+    frame.setResizable(true);
+  }
   
   textFont(f,100);
   // Specify font color
@@ -60,8 +70,7 @@ void setup() {
   video.start();
 }
 
-void draw() {  
-  
+void draw() {   
   // Capture video
   if (video.available()) {
     // Save previous frame for motion detection!!
@@ -79,6 +88,7 @@ void draw() {
     for (int y = 0; y < video.height; y ++ ) {
       
       int loc = x + y*video.width;            // Step 1, what is the 1D pixel location
+      
       color current = video.pixels[loc];      // Step 2, what is the current color
       color previous = prevFrame.pixels[loc]; // Step 3, what is the previous color
       
@@ -135,3 +145,4 @@ void updateText(){
 float getPercentage(){
     return (pixel_changed / num_of_pixels) * 100;
 }
+
